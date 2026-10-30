@@ -90,3 +90,4 @@ This repository is configured for out-of-the-box deployment on Vercel:
 
 ## ⚖️ Disclaimer
 *This project is a prototype developed for Smart India Hackathon 2026 (Problem Statement 26264). Demonstration data is fictional and does not represent official AICTE records.*
+
