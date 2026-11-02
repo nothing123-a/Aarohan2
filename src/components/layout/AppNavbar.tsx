@@ -18,7 +18,8 @@ import {
   Clock,
   ShieldAlert,
   Send,
-  Plus
+  Plus,
+  X
 } from "lucide-react";
 import { UserRole, NotificationItem } from "@/types";
 import { StorageService } from "@/lib/storage";
@@ -34,6 +35,7 @@ export default function AppNavbar({ currentRole, pageTitle, onSearch }: AppNavba
   const router = useRouter();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const [isLodgeModalOpen, setIsLodgeModalOpen] = useState(false);
   const [notifications, setNotifications] = useState<NotificationItem[]>(() => {
     return StorageService.getNotifications(currentRole);
@@ -60,11 +62,53 @@ export default function AppNavbar({ currentRole, pageTitle, onSearch }: AppNavba
     setNotifications(StorageService.getNotifications(currentRole));
   };
 
-  const roleLabels: Record<UserRole, { title: string; subtitle: string }> = {
-    student_teacher: { title: "Aarav Sharma", subtitle: "Student · DTU Delhi" },
-    institution_nodal: { title: "Prof. S. K. Mahajan", subtitle: "Nodal Officer · DTU (1-4921029)" },
-    aicte_admin: { title: "Dr. Rajesh Verma", subtitle: "AICTE Central Director · HQ New Delhi" },
+  const profileDetails: Record<UserRole, {
+    title: string;
+    subtitle: string;
+    name: string;
+    roleLabel: string;
+    email: string;
+    phone: string;
+    institution: string;
+    institutionalId: string;
+    aictePermanentId: string;
+  }> = {
+    student_teacher: {
+      title: "Aarav Sharma",
+      subtitle: "Student · DTU Delhi",
+      name: "Aarav Sharma",
+      roleLabel: "Student (Final Year B.Tech)",
+      email: "aarav.sharma@dtu.ac.in",
+      phone: "+91 98712 34567",
+      institution: "Delhi Technological University",
+      institutionalId: "DTU / 2023CS104",
+      aictePermanentId: "1-4921029",
+    },
+    institution_nodal: {
+      title: "Prof. S. K. Mahajan",
+      subtitle: "Nodal Officer · DTU (1-4921029)",
+      name: "Prof. S. K. Mahajan",
+      roleLabel: "Institution Nodal Officer (Dean & Convener)",
+      email: "nodal.pgrc@dtu.ac.in",
+      phone: "+91 11 2787 1018",
+      institution: "Delhi Technological University",
+      institutionalId: "EMP / DTU-9402",
+      aictePermanentId: "1-4921029",
+    },
+    aicte_admin: {
+      title: "Dr. Rajesh Verma",
+      subtitle: "AICTE Central Director · HQ New Delhi",
+      name: "Dr. Rajesh Verma",
+      roleLabel: "AICTE Central Director",
+      email: "director.pgrc@aicte-india.org",
+      phone: "+91 11 2958 1000",
+      institution: "AICTE Headquarters, New Delhi",
+      institutionalId: "GOI / AICTE-DIR-08",
+      aictePermanentId: "HQ-NEW-DELHI",
+    },
   };
+
+  const currentProfile = profileDetails[currentRole];
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur-md">
@@ -205,51 +249,87 @@ export default function AppNavbar({ currentRole, pageTitle, onSearch }: AppNavba
             )}
           </div>
 
-          {/* User Account Menu */}
+          {/* User Account Menu in Right Corner */}
           <div className="relative">
             <button
               onClick={() => setShowProfileMenu(!showProfileMenu)}
               className="flex items-center gap-2 p-1.5 rounded-lg border border-slate-200 hover:border-orange-300 transition-colors"
             >
               <div className="w-7 h-7 rounded-md bg-slate-900 text-white font-bold text-xs flex items-center justify-center">
-                {roleLabels[currentRole].title.charAt(0)}
+                {currentProfile.name.charAt(0)}
               </div>
               <div className="hidden md:block text-left text-xs">
                 <span className="font-bold text-slate-900 block leading-tight">
-                  {roleLabels[currentRole].title}
+                  {currentProfile.title}
                 </span>
                 <span className="text-[10px] text-slate-400">
-                  {roleLabels[currentRole].subtitle}
+                  {currentProfile.subtitle}
                 </span>
               </div>
               <ChevronDown size={14} className="text-slate-400 hidden sm:block" />
             </button>
 
             {showProfileMenu && (
-              <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-50 text-xs">
-                <div className="p-2.5 bg-slate-50 rounded-xl mb-1">
-                  <p className="text-[10px] uppercase font-bold text-slate-400">Active Persona</p>
-                  <p className="font-bold text-slate-900 text-sm">{roleLabels[currentRole].title}</p>
-                  <p className="text-[11px] text-orange-600 font-semibold">{roleLabels[currentRole].subtitle}</p>
+              <div className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-slate-200 p-3 z-50 text-xs">
+                {/* Profile Overview Card */}
+                <div className="p-3 bg-slate-50 rounded-xl mb-2 border border-slate-100">
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <div className="w-9 h-9 rounded-lg bg-slate-900 text-white font-bold text-sm flex items-center justify-center shadow-xs">
+                      {currentProfile.name.charAt(0)}
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="font-bold text-slate-900 text-xs truncate">{currentProfile.name}</p>
+                      <span className="text-[10px] text-orange-600 font-semibold truncate block">{currentProfile.roleLabel}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5 pt-2 border-t border-slate-200/60 text-[11px] text-slate-600">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">Email:</span>
+                      <span className="font-semibold text-slate-800 truncate max-w-[150px]">{currentProfile.email}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">Institution:</span>
+                      <span className="font-semibold text-slate-800 truncate max-w-[150px]">{currentProfile.institution}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">ID / PID:</span>
+                      <span className="font-mono font-semibold text-slate-800">{currentProfile.aictePermanentId}</span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => { setShowProfileModal(true); setShowProfileMenu(false); }}
+                    className="w-full mt-2.5 py-1.5 px-3 rounded-lg bg-orange-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-orange-700 transition-colors shadow-2xs"
+                  >
+                    <User size={13} />
+                    <span>View Full Profile</span>
+                  </button>
                 </div>
 
                 <div className="py-1">
                   <p className="text-[10px] uppercase font-bold text-slate-400 px-2 py-1">Switch Demo Persona</p>
                   <button
                     onClick={() => { handleRoleSwitch("student_teacher"); setShowProfileMenu(false); }}
-                    className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-slate-50 font-medium text-slate-700"
+                    className={`w-full text-left px-2.5 py-1.5 rounded-lg font-medium transition-colors ${
+                      currentRole === "student_teacher" ? "bg-orange-50 text-orange-700 font-bold" : "hover:bg-slate-50 text-slate-700"
+                    }`}
                   >
                     1. Student / Teacher Portal
                   </button>
                   <button
                     onClick={() => { handleRoleSwitch("institution_nodal"); setShowProfileMenu(false); }}
-                    className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-slate-50 font-medium text-slate-700"
+                    className={`w-full text-left px-2.5 py-1.5 rounded-lg font-medium transition-colors ${
+                      currentRole === "institution_nodal" ? "bg-orange-50 text-orange-700 font-bold" : "hover:bg-slate-50 text-slate-700"
+                    }`}
                   >
                     2. Institution Nodal Officer
                   </button>
                   <button
                     onClick={() => { handleRoleSwitch("aicte_admin"); setShowProfileMenu(false); }}
-                    className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-slate-50 font-medium text-slate-700"
+                    className={`w-full text-left px-2.5 py-1.5 rounded-lg font-medium transition-colors ${
+                      currentRole === "aicte_admin" ? "bg-orange-50 text-orange-700 font-bold" : "hover:bg-slate-50 text-slate-700"
+                    }`}
                   >
                     3. AICTE Central Admin
                   </button>
@@ -269,6 +349,79 @@ export default function AppNavbar({ currentRole, pageTitle, onSearch }: AppNavba
           </div>
         </div>
       </div>
+
+      {/* Profile Details Modal */}
+      {showProfileModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 border border-slate-200 shadow-xl space-y-5 text-xs">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center font-bold">
+                  <User size={16} />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-slate-900">User Registered Profile</h3>
+                  <p className="text-slate-500 text-[11px]">Demographic and institutional credentials</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowProfileModal(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-slate-900 text-white font-bold text-base flex items-center justify-center shadow-xs">
+                  {currentProfile.name.charAt(0)}
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-sm">{currentProfile.name}</h4>
+                  <p className="text-xs text-orange-600 font-semibold">{currentProfile.roleLabel}</p>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-slate-200 grid grid-cols-2 gap-2.5 text-xs">
+                <div>
+                  <span className="text-slate-400 font-medium block text-[11px]">Registered Email</span>
+                  <span className="font-semibold text-slate-800 break-all">{currentProfile.email}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 font-medium block text-[11px]">Contact Number</span>
+                  <span className="font-semibold text-slate-800">{currentProfile.phone}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 font-medium block text-[11px]">Affiliated Institution</span>
+                  <span className="font-semibold text-slate-800">{currentProfile.institution}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 font-medium block text-[11px]">AICTE Permanent ID</span>
+                  <span className="font-mono font-semibold text-slate-800">{currentProfile.aictePermanentId}</span>
+                </div>
+                <div className="col-span-2">
+                  <span className="text-slate-400 font-medium block text-[11px]">Institutional ID / Roll</span>
+                  <span className="font-mono font-semibold text-slate-800">{currentProfile.institutionalId}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-1">
+              <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                Verified Active Session
+              </span>
+              <button
+                onClick={() => setShowProfileModal(false)}
+                className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 transition-colors shadow-xs"
+              >
+                Close Profile
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Lodge New Grievance Modal */}
       <NewComplaintModal
         isOpen={isLodgeModalOpen}

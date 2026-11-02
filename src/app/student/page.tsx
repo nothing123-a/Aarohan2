@@ -560,47 +560,6 @@ function StudentDashboardContent() {
               </div>
             </div>
           )}
-
-          {/* TAB 5: PROFILE (Fulfills Feature 8) */}
-          {activeTab === "profile" && (
-            <div className="bg-white rounded-xl border border-slate-200 shadow-2xs p-6 space-y-4 text-xs max-w-xl">
-              <div>
-                <h2 className="text-base font-bold text-slate-900">Complainant Registered Profile</h2>
-                <p className="text-slate-500">Demographic and institutional affiliation details</p>
-              </div>
-
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-slate-900 text-white font-bold text-base flex items-center justify-center">
-                    A
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-slate-900 text-sm">Aarav Sharma</h3>
-                    <p className="text-slate-500 text-xs">Role: Student (Final Year B.Tech)</p>
-                  </div>
-                </div>
-
-                <div className="pt-2 border-t border-slate-200 grid grid-cols-2 gap-2 text-xs">
-                  <div>
-                    <span className="text-slate-400 font-medium block">Registered Email</span>
-                    <span className="font-semibold text-slate-800">aarav.sharma@dtu.ac.in</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-400 font-medium block">Institutional ID</span>
-                    <span className="font-semibold text-slate-800">DTU / 2023CS104</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-400 font-medium block">Affiliated Institution</span>
-                    <span className="font-semibold text-slate-800">Delhi Technological University</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-400 font-medium block">AICTE Permanent ID</span>
-                    <span className="font-semibold text-slate-800">1-4921029</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </main>
       </div>
 

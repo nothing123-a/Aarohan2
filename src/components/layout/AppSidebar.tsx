@@ -54,7 +54,6 @@ export default function AppSidebar({
     { id: "track", label: "Track Complaint", icon: <Compass size={17} /> },
     { id: "my-complaints", label: "My Complaints", icon: <FileText size={17} /> },
     { id: "notifications", label: "Notifications", icon: <Bell size={17} /> },
-    { id: "profile", label: "Profile", icon: <User size={17} /> },
   ];
 
   const institutionNavItems: NavItem[] = [
