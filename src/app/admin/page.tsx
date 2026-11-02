@@ -698,37 +698,6 @@ export default function AdminDashboard() {
               </div>
             </div>
           )}
-
-          {/* SECTION 3F: USER MANAGEMENT */}
-          {activeTab === "users" && (
-            <div className="bg-white rounded-xl border border-slate-200 shadow-2xs p-6 space-y-4 text-xs max-w-2xl">
-              <div>
-                <h2 className="text-base font-bold text-slate-900">Demo User & Access Management</h2>
-                <p className="text-slate-500">Role-based access controls for prototype demonstration</p>
-              </div>
-
-              <div className="space-y-2">
-                {[
-                  { name: "Dr. Rajesh Verma", role: "AICTE Central Admin", desc: "Full permissions: Reassignment, Overlap reviews, Status changes", current: true },
-                  { name: "Prof. S. K. Mahajan", role: "Institution Nodal Officer", desc: "Restricted to DTU assigned cases, response filing and ATR uploads", current: false },
-                  { name: "Aarav Sharma", role: "Student / Complainant", desc: "Complainant submission, status tracking, clarification submission", current: false },
-                ].map((u, i) => (
-                  <div key={i} className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
-                    <div>
-                      <p className="font-bold text-slate-900 text-sm">{u.name}</p>
-                      <span className="text-xs font-semibold text-orange-600 block">{u.role}</span>
-                      <p className="text-slate-500 text-[11px] mt-0.5">{u.desc}</p>
-                    </div>
-                    {u.current && (
-                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        ACTIVE SESSION
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </main>
       </div>
 

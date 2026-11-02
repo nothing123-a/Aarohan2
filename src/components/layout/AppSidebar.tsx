@@ -74,7 +74,6 @@ export default function AppSidebar({
     { id: "coordination", label: "Bureau Coordination", icon: <Users2 size={17} /> },
     { id: "analytics", label: "Analytics & Reports", icon: <BarChart3 size={17} /> },
     { id: "notifications", label: "Notifications", icon: <Bell size={17} /> },
-    { id: "users", label: "User Management", icon: <User size={17} /> },
   ];
 
   const navItems = 
